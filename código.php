@@ -55,7 +55,7 @@ if (isset($_POST['editar'])) {
     $sql = "UPDATE usuarios SET nome = ?, email = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
 
-    $stmt->bind_param("ssi", $nome, $email, $id)
+    $stmt->bind_param("ssi", $nome, $email, $id);
     $stmt->execute();
 
     header("Location: index.php");
@@ -65,7 +65,7 @@ if (isset($_POST['editar'])) {
 
 // BUSCAR USUARIOS
 $sql = "SELECT id, nome, email FROM usuarios ORDER BY id DESC";
-$resultado = $conn->query($sql)
+$resultado = $conn->query($sql);
 
 ?>
 
@@ -84,12 +84,12 @@ $resultado = $conn->query($sql)
     <form method="POST">
 
         <label>Nome:</label>
-        <input type="text" name="nome" required>
+        <input type="text" name="nome">
 
         <br><br>
 
         <label>E-mail:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email">
 
         <br><br>
 
@@ -127,9 +127,11 @@ $resultado = $conn->query($sql)
                 </td>
 
                 <td>
+
                     <a href="index.php?excluir=<?= $usuario['id'] ?>">
                         Excluir
                     </a>
+
                 </td>
 
             </tr>
