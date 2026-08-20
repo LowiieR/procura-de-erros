@@ -8,7 +8,7 @@ $database = "crud_aula";
 $conn = new mysqli($host, $user, $password, $database);
 
 if ($conn->connect_error) {
-    die("Erro na conexão: " . $conn->connect_error)
+    die("Erro na conexão: " . $conn->connect_error);
 }
 
 
@@ -17,6 +17,10 @@ if (isset($_POST['cadastrar'])) {
 
     $nome = $_POST['nome'];
     $email = $_POST['email'];
+
+    if (empty($nome) || empty($email)) {
+        die("Preencha todos os campos.");
+    }
 
     $sql = "INSERT INTO usuarios (nome, email) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
@@ -52,10 +56,14 @@ if (isset($_POST['editar'])) {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
 
+    if (empty($nome) || empty($email)) {
+        die("Preencha todos os campos.");
+    }
+
     $sql = "UPDATE usuarios SET nome = ?, email = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
 
-    $stmt->bind_param("ssi", $nome, $email, $id)
+    $stmt->bind_param("ssi", $nome, $email, $id);
     $stmt->execute();
 
     header("Location: index.php");
@@ -65,7 +73,7 @@ if (isset($_POST['editar'])) {
 
 // BUSCAR USUARIOS
 $sql = "SELECT id, nome, email FROM usuarios ORDER BY id DESC";
-$resultado = $conn->query($sql)
+$resultado = $conn->query($sql);
 
 ?>
 
@@ -115,18 +123,22 @@ $resultado = $conn->query($sql)
             <tr>
 
                 <td>
-                    <?= $usuario['id'] ?>
+                    <?= htmlspecialchars($usuario['id']) ?>
                 </td>
 
                 <td>
-                    <?= $usuario['nome'] ?>
+                    <?= htmlspecialchars($usuario['nome']) ?>
                 </td>
 
                 <td>
-                    <?= $usuario['email'] ?>
+                    <?= htmlspecialchars($usuario['email']) ?>
                 </td>
 
                 <td>
+
+                    <a href="index.php?editar=<?= $usuario['id'] ?>">
+                        Editar
+                    </a>
 
                     <a href="index.php?excluir=<?= $usuario['id'] ?>">
                         Excluir
